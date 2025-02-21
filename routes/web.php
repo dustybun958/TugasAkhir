@@ -17,35 +17,31 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+// Authenticated Routes
+Route::middleware(['auth'])->group(function () {
+    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-// Mendaftarkan fungsi index dari KategoriController pada route /kategori
-Route::get('/kategori', [App\Http\Controllers\KategoriController::class, 'index'])->name('daftarKategori');
+    // Category Routes
+    Route::get('/category', [App\Http\Controllers\CategoryController::class, 'index'])->name('daftarCategory');
+    Route::get('/category/create', [App\Http\Controllers\CategoryController::class, 'create'])->name('createCategory');
+    Route::post('/category/create', [App\Http\Controllers\CategoryController::class, 'store'])->name('storeCategory');
+    Route::get('/category/{id}/edit', [App\Http\Controllers\CategoryController::class, 'edit'])->name('editCategory');
+    Route::post('/category/{id}', [App\Http\Controllers\CategoryController::class, 'update'])->name('updateCategory');
+    Route::get('/category/{id}/delete', [App\Http\Controllers\CategoryController::class, 'destroy'])->name('deleteCategory');
 
-// Mendaftarkan fungsi index dari ArtikelController pada route /artikel
-Route::get('/artikel', [App\Http\Controllers\ArtikelController::class, 'index'])->name('daftarArtikel');
+    // Product Routes
+    Route::get('/product', [App\Http\Controllers\ProductController::class, 'index'])->name('daftarProduct');
+    Route::get('/product/create', [App\Http\Controllers\ProductController::class, 'create'])->name('createProduct');
+    Route::post('/product/create', [App\Http\Controllers\ProductController::class, 'store'])->name('storeProduct');
+    Route::get('/product/{id}/edit', [App\Http\Controllers\ProductController::class, 'edit'])->name('editProduct');
+    Route::post('/product/{id}', [App\Http\Controllers\ProductController::class, 'update'])->name('updateProduct');
+    Route::get('/product/{id}/delete', [App\Http\Controllers\ProductController::class, 'destroy'])->name('deleteProduct');
 
-Route::get('/kategori/create', [App\Http\Controllers\KategoriController::class, 'create'])->name('createKategori');
-Route::post('/kategori/create', [App\Http\Controllers\KategoriController::class, 'store'])->name('storeKategori');
-
-
-// route untuk menampilkan view edit kategori
-Route::get('/kategori/{id}/edit', [App\Http\Controllers\KategoriController::class, 'edit'])->name('editKategori');
-
-// route untuk menyimpan perubahan kategori, perhatikan bahwa fungsi rutenya adalah post
-Route::post('/kategori/{id}', [App\Http\Controllers\KategoriController::class, 'update'])->name('updateKategori');
-
-// route untuk menampilkan view create artikel
-Route::get('/artikel/create', [App\Http\Controllers\ArtikelController::class, 'create'])->name('createArtikel');
-
-// route untuk menyimpan artikel, perhatikan bahwa fungsi routenya adalah post
-Route::post('/artikel/create', [App\Http\Controllers\ArtikelController::class, 'store'])->name('storeArtikel');
-
-// route untuk menampilkan view edit artikel
-Route::get('/artikel/{id}/edit', [App\Http\Controllers\ArtikelController::class, 'edit'])->name('editArtikel');
-
-// route untuk menyimpan perubahan artikel, perhatikan bahwa fungsi routenya adalah post
-Route::post('/artikel/{id}/edit', [App\Http\Controllers\ArtikelController::class, 'update'])->name('updateArtikel');
-
-Route::get('/kategori/{id}/delete', [App\Http\Controllers\KategoriController::class, 'destroy'])->name('deleteKategori');
-Route::get('/artikel/{id}/delete', [App\Http\Controllers\ArtikelController::class, 'destroy'])->name('deleteArtikel');
+    // Transaction Routes
+    Route::get('/transaction', [App\Http\Controllers\TransactionController::class, 'index'])->name('daftarTransaction');
+    Route::get('/transaction/create', [App\Http\Controllers\TransactionController::class, 'create'])->name('createTransaction');
+    Route::post('/transaction/create', [App\Http\Controllers\TransactionController::class, 'store'])->name('storeTransaction');
+    Route::get('/transaction/{id}/edit', [App\Http\Controllers\TransactionController::class, 'edit'])->name('editTransaction');
+    Route::post('/transaction/{id}', [App\Http\Controllers\TransactionController::class, 'update'])->name('updateTransaction');
+    Route::get('/transaction/{id}/delete', [App\Http\Controllers\TransactionController::class, 'destroy'])->name('deleteTransaction');
+});

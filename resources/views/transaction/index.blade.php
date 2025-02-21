@@ -36,12 +36,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">Daftar Kategori</h1>
+                    <h1 class="m-0">Transaction List</h1>
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">Daftar Kategori</li>
+                        <li class="breadcrumb-item active">Transaction List</li>
                     </ol>
                 </div><!-- /.col -->
             </div><!-- /.row -->
@@ -52,36 +52,44 @@
     <!-- Main content -->
     <div class="content">
         <div class="container-fluid">
-           <div class="card">
-            <div class="card-header text-right">
-                <a href="{{ route('createKategori') }}" class="btn btn-primary" role="button">Tambah Kategori</a>
-            </div>
+            <div class="card">
+                <div class="card-header text-right">
+                    <a href="{{route('createTransaction')}}" class="btn btn-primary" role="button">Add Transaction</a>
+                </div>
                 <div class="card-body">
                     <table class="table table-hover table-bordered" id="data-table">
                         <thead>
                             <tr>
                                 <th>No.</th>
-                                <th>Nama Kategori</th>
-                                <th>Deskripsi</th>
-                                <th>Aksi</th>
+                                <th>Transaction Date</th>
+                                <th>Product</th>
+                                <th>Quantity</th>
+                                <th>Total Price</th>
+                                <th>Customer Name</th>
+                                <th>Customer Phone</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($kategoris as $kategori)
+                            @foreach ($transactions as $transaction)
                             <tr>
-                                <td>{{ $loop->index + 1 }}</td>
-                                <td>{{ $kategori->nama_kategori }}</td>
-                                <td>{{ $kategori->deskripsi }}</td>
+                                <td>{{$loop->index+1}}</td>
+                                <td>{{$transaction->transaction_date}}</td>
+                                <td>{{$transaction->product->name}}</td>
+                                <td>{{$transaction->quantity}}</td>
+                                <td>{{$transaction->total_price_formatted}}</td>
+                                <td>{{$transaction->customer_name}}</td>
+                                <td>{{$transaction->customer_phone}}</td>
                                 <td>
-                                    <a href="{{route('editKategori', ['id'=>$kategori->id])}}" class="btn btn-warning btn-sm" role="button">Edit</a>
-                                    <a onclick="confirmDelete(this)" data-url="{{ route('deleteKategori', ['id' => $kategori->id]) }}" class="btn btn-danger btn-sm" role="button">Hapus</a>
+                                    <a href="{{route('editTransaction', $transaction->id)}}" class="btn btn-warning btn-sm" role="button">Edit</a>
+                                    <a onclick="confirmDelete(this)" data-url="{{route('deleteTransaction', $transaction->id)}}" class="btn btn-danger btn-sm" role="button">Delete</a>
                                 </td>
                             </tr>
                             @endforeach
                         </tbody>
                     </table>
                 </div>
-</div>
+            </div>
         </div>
     </div>
     <!-- /.content -->
