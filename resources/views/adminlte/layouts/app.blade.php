@@ -15,6 +15,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <link rel="stylesheet" href="{{ asset('assets/plugins/fontawesome-free/css/all.min.css') }}">
   <!-- Theme style -->
   <link rel="stylesheet" href="{{ asset('assets/dist/css/adminlte.min.css') }}">
+  @yield('addCss')
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -188,45 +189,45 @@ scratch. This page gets rid of all links and provides the needed markup only.
       </div>
 
       <!-- Sidebar Menu -->
-      <nav class="mt-2">
-        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-          <!-- Add icons to the links using the .nav-icon class
-               with font-awesome or any other icon font library -->
-          <li class="nav-item menu-open">
-            <a href="#" class="nav-link active">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
-              <p>
-                Starter Pages
-                <i class="right fas fa-angle-left"></i>
-              </p>
+<nav class="mt-2">
+    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+        <!-- Add icons to the links using the .nav-icon class
+             with font-awesome or any other icon font library -->
+        <li class="nav-item {{ request()->routeIs('home') || request()->routeIs('daftarKategori') || request()->routeIs('daftarArtikel') ? 'menu-open' : '' }}">
+            <a href="{{ route('home') }}" class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}">
+                <i class="nav-icon fas fa-tachometer-alt"></i>
+                <p>
+                    Dashboard
+                </p>
+            </a>
+        </li>
+        <li class="nav-item menu-open">
+            <a href="#" class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
+                <i class="nav-icon fas fad fa-bars"></i>
+                <p>
+                    Menu
+                    <i class="right fas fa-angle-left"></i>
+                </p>
             </a>
             <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="#" class="nav-link active">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Active Page</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Inactive Page</p>
-                </a>
-              </li>
+                <li class="nav-item">
+                    <a href="{{ route('daftarKategori') }}" class="nav-link {{ request()->routeIs('daftarKategori') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-th"></i>
+                        <p>Daftar Kategori</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('daftarArtikel') }}" class="nav-link {{ request()->routeIs('daftarArtikel') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-store"></i>
+                        <p>Daftar Artikel</p>
+                    </a>
+                </li>
             </ul>
-          </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-th"></i>
-              <p>
-                Simple Link
-                <span class="right badge badge-danger">New</span>
-              </p>
-            </a>
-          </li>
-        </ul>
-      </nav>
-      <!-- /.sidebar-menu -->
+        </li>
+
+    </ul>
+</nav>
+<!-- /.sidebar-menu -->
     </div>
     <!-- /.sidebar -->
   </aside>
@@ -234,12 +235,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
   @yield('content')
 
 <!-- REQUIRED SCRIPTS -->
-
+@include('sweetalert::alert')
 <!-- jQuery -->
 <script src="{{ asset('assets/plugins/jquery/jquery.min.js') }}"></script>
 <!-- Bootstrap 4 -->
 <script src="{{ asset('assets/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 <!-- AdminLTE App -->
 <script src="{{ asset('assets/dist/js/adminlte.min.js') }}"></script>
+@yield('addJavascript')
 </body>
 </html>
