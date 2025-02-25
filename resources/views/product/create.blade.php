@@ -12,7 +12,6 @@
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
-
             <li class="breadcrumb-item active">Add Product</li>
           </ol>
         </div><!-- /.col -->
@@ -75,18 +74,20 @@
               @enderror
             </div>
 
-
-
             <div class="form-group">
               <label class="font-weight-bold">Image</label>
-              <input type="file" class="form-control @error('image') is-invalid @enderror" name="image">
+              <input type="file" class="form-control @error('image') is-invalid @enderror" name="image" id="image" onchange="previewImage()">
               @error('image')
               <div class="alert alert-danger mt-2">{{ $message }}</div>
               @enderror
+              <!-- Image Preview -->
+              <div class="mt-3">
+                <img id="imagePreview" src="#" alt="Preview" style="max-width: 200px; display: none;" class="img-thumbnail">
+              </div>
             </div>
 
             <button type="submit" class="btn btn-md btn-primary">SAVE</button>
-            <button type="reset" class="btn btn-md btn-warning">RESET</button>
+            <button type="reset" class="btn btn-md btn-warning" onclick="resetImage()">RESET</button>
           </form>
         </div>
       </div>
@@ -100,5 +101,28 @@
 <script>
   CKEDITOR.replace('description');
 
+  // Function to preview image before upload
+  function previewImage() {
+    const image = document.querySelector('#image');
+    const imagePreview = document.querySelector('#imagePreview');
+
+    imagePreview.style.display = 'block';
+
+    const oFReader = new FileReader();
+    oFReader.readAsDataURL(image.files[0]);
+
+    oFReader.onload = function(oFREvent) {
+      imagePreview.src = oFREvent.target.result;
+    }
+  }
+
+  // Function to reset image preview
+  function resetImage() {
+    const imagePreview = document.querySelector('#imagePreview');
+    imagePreview.src = '#';
+    imagePreview.style.display = 'none';
+  }
+
 </script>
+
 @endsection

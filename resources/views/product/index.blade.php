@@ -43,7 +43,6 @@
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
-
             <li class="breadcrumb-item active">Product List</li>
           </ol>
         </div><!-- /.col -->
@@ -77,7 +76,11 @@
               @foreach ($products as $product)
               <tr>
                 <td>{{$loop->index+1}}</td>
-                <td><img src="{{ asset('/storage/products/' . $product->image_path) }}" width="50" height="50" alt="Product Image"></td>
+                <td>
+                  <div class="product-image-container">
+                    <img src="{{ asset('/storage/products/' . $product->image_path) }}" alt="Product Image" class="product-image" onclick="showImageModal(this.src)">
+                  </div>
+                </td>
                 <td>{{$product->category->name}}</td>
                 <td>{{$product->name}}</td>
                 <td>{!!$product->description!!}</td>
@@ -98,4 +101,82 @@
   <!-- /.content -->
 </div>
 <!-- /.content-wrapper -->
+
+<!-- Image Modal -->
+<div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="imageModalLabel">Image Preview</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body text-center">
+        <img id="modalImage" src="" alt="Product Image Preview">
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function showImageModal(imageSrc) {
+    $('#modalImage').attr('src', imageSrc);
+    $('#imageModal').modal('show');
+  }
+
+  // Optional: Close modal when clicking outside
+  $(document).click(function(e) {
+    if ($(e.target).is('#imageModal')) {
+      $('#imageModal').modal('hide');
+    }
+  });
+
+</script>
+
+<style>
+  .product-image-container {
+    width: 50px;
+    height: 50px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .product-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    cursor: pointer;
+  }
+
+  .product-image:hover {
+    opacity: 0.8;
+    transition: opacity 0.3s ease;
+  }
+
+  #imageModal .modal-body {
+    padding: 0;
+    background-color: #000;
+  }
+
+  #modalImage {
+    max-width: 100%;
+    max-height: 80vh;
+    display: block;
+    margin: 0 auto;
+    object-fit: contain;
+  }
+
+  /* Make sure modal is responsive */
+  @media (max-width: 768px) {
+    .modal-dialog {
+      margin: 0.5rem;
+    }
+  }
+
+</style>
+
+
 @endsection
