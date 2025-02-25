@@ -9,22 +9,34 @@ class CategorySeeder extends Seeder
 {
     public function run()
     {
-        DB::table('categories')->insert([
+        $categories = [
             [
-                'name' => 'Makanan',
-                'description' => 'Berbagai jenis makanan',
+                'name' => 'Electronics',
+                'description' => 'Electronic devices and accessories',
                 'created_at' => now()
             ],
             [
-                'name' => 'Minuman',
-                'description' => 'Berbagai jenis minuman',
+                'name' => 'Fashion',
+                'description' => 'Clothing and accessories',
                 'created_at' => now()
             ],
             [
-                'name' => 'Snack',
-                'description' => 'Berbagai jenis cemilan',
+                'name' => 'Home & Living',
+                'description' => 'Home decoration and furniture',
+                'created_at' => now()
+            ],
+            [
+                'name' => 'Books',
+                'description' => 'Books and educational materials',
+                'created_at' => now()
+            ],
+            [
+                'name' => 'Sports',
+                'description' => 'Sports equipment and accessories',
                 'created_at' => now()
             ]
-        ]);
+        ];
+
+        DB::table('categories')->insert($categories);
     }
 }

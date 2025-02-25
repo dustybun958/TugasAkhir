@@ -4,42 +4,53 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Faker\Factory as Faker;
+use Carbon\Carbon;
 
 class TransactionSeeder extends Seeder
 {
-    private $customerNames = [
-        'John Doe',
-        'Jane Smith',
-        'Ahmad',
-        'Siti',
-        'Michael',
-        'Sarah',
-        'David',
-        'Lisa',
-        'Robert',
-        'Emma'
-    ];
-
     public function run()
     {
-        $transactions = [];
+        $faker = Faker::create('id_ID'); // Using Indonesian locale
+
+        // Get all product IDs from the products table
         $productIds = DB::table('products')->pluck('id')->toArray();
 
+        // Generate 50 transactions
+        $transactions = [];
+
         for ($i = 0; $i < 50; $i++) {
-            $productId = $productIds[array_rand($productIds)];
-            $product = DB::table('products')->find($productId);
-            $quantity = rand(1, 10);
+            // Get random product ID
+            $productId = $faker->randomElement($productIds);
+
+            // Get product price for calculation
+            $product = DB::table('products')->where('id', $productId)->first();
+
+            // Random quantity between 1 and 10
+            $quantity = $faker->numberBetween(1, 10);
+
+            // Calculate total price
+            $totalPrice = $quantity * $product->price;
+
+            // Generate random date within the last 30 days
+            $transactionDate = Carbon::now()->subDays($faker->numberBetween(0, 30));
 
             $transactions[] = [
                 'product_id' => $productId,
                 'quantity' => $quantity,
-                'total_price' => $product->price * $quantity,
-                'transaction_date' => now()->subDays(rand(0, 30))->addHours(rand(0, 23)),
-                'customer_name' => $this->customerNames[array_rand($this->customerNames)],
-                'customer_phone' => '08' . rand(1000000000, 9999999999)
+                'total_price' => $totalPrice,
+                'transaction_date' => $transactionDate,
+                'customer_name' => $faker->name,
+                'customer_phone' => $faker->phoneNumber
             ];
         }
 
+        // Sort transactions by date
+        usort($transactions, function ($a, $b) {
+            return strtotime($a['transaction_date']) - strtotime($b['transaction_date']);
+        });
+
+        // Insert all transactions
         DB::table('transactions')->insert($transactions);
     }
 }

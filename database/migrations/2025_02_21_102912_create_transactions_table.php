@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('product_id')->constrained()->onDelete('cascade');
             $table->integer('quantity');
-            $table->decimal('total_price', 10, 2);
+            $table->decimal('total_price', 20, 2);
             $table->timestamp('transaction_date')->useCurrent();
             $table->string('customer_name', 200)->nullable();
             $table->string('customer_phone', 20)->nullable();
